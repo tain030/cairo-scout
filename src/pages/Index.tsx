@@ -12,33 +12,29 @@ const Index = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-hero py-16 md:py-24">
+      {/* Hero Section - Blockscout Style */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-primary/80 via-accent to-primary/60 py-12 md:py-16">
         {/* Background Effects */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-cyan-500/20 via-transparent to-transparent" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
         </div>
 
         <div className="container mx-auto px-4 relative">
-          <div className="max-w-3xl mx-auto text-center mb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 animate-fade-in">
-              <span className="text-gradient">Cairo</span>
-              <span className="text-foreground"> Scout</span>
+          <div className="max-w-4xl">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-white">
+              Starknet explorer
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-in" style={{ animationDelay: '100ms' }}>
-              Starknet Blockchain Explorer
-            </p>
-          </div>
-          
-          <div className="max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '200ms' }}>
-            <SearchBar variant="hero" />
+            
+            <div className="max-w-3xl">
+              <SearchBar variant="hero" />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="container mx-auto px-4 -mt-8 relative z-10">
+      <section className="container mx-auto px-4 -mt-6 relative z-10">
         <ChainStats />
       </section>
 
