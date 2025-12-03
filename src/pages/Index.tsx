@@ -40,9 +40,13 @@ const Index = () => {
 
       {/* Tables Section */}
       <section className="container mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-6">
-          <BlocksTable blocks={blocks} compact />
-          <TransactionsTable transactions={transactions} compact />
+        <div className="grid lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1">
+            <BlocksTable blocks={blocks} compact />
+          </div>
+          <div className="lg:col-span-2">
+            <TransactionsTable transactions={transactions} compact />
+          </div>
         </div>
       </section>
     </Layout>

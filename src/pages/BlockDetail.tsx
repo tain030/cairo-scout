@@ -5,6 +5,7 @@ import { Box, Clock, Hash, Layers, Fuel, User, ArrowLeft, ArrowRight } from 'luc
 import { generateBlocks, generateTransactions, formatTimestamp, truncateHash } from '@/lib/mockData';
 import { Button } from '@/components/ui/button';
 import { TransactionsTable } from '@/components/TransactionsTable';
+import { CopyButton } from '@/components/CopyButton';
 
 const BlockDetail = () => {
   const { blockId } = useParams();
@@ -68,9 +69,12 @@ const BlockDetail = () => {
                   <detail.icon className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm text-muted-foreground">{detail.label}</span>
                 </div>
-                <span className={`text-sm text-foreground ${detail.mono ? 'font-mono break-all' : ''}`}>
-                  {detail.mono ? truncateHash(detail.value, 20, 20) : detail.value}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm text-foreground ${detail.mono ? 'font-mono break-all' : ''}`}>
+                    {detail.mono ? truncateHash(detail.value, 20, 20) : detail.value}
+                  </span>
+                  {detail.mono && <CopyButton text={detail.value} />}
+                </div>
               </div>
             ))}
           </div>

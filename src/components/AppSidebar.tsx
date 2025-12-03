@@ -8,7 +8,9 @@ import {
   Layers,
   ChevronDown,
   Globe,
-  TestTube
+  TestTube,
+  PanelLeftClose,
+  PanelLeft
 } from 'lucide-react';
 import {
   Sidebar,
@@ -21,6 +23,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarFooter,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import {
   Collapsible,
@@ -28,6 +31,7 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 const chains = [
   { name: 'Starknet', icon: '⚡' },
@@ -42,12 +46,14 @@ const networks = [
 
 export function AppSidebar() {
   const location = useLocation();
+  const { state, toggleSidebar } = useSidebar();
   const [selectedChain, setSelectedChain] = useState('Starknet');
   const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
   const [chainsOpen, setChainsOpen] = useState(false);
   const [networkOpen, setNetworkOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
+  const isCollapsed = state === 'collapsed';
 
   const navItems = [
     { title: 'Home', url: '/', icon: Home },
@@ -56,17 +62,29 @@ export function AppSidebar() {
   ];
 
   return (
-    <Sidebar className="border-r border-border bg-sidebar">
+    <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
       <SidebarHeader className="p-4 border-b border-border">
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="h-9 w-9 rounded-lg bg-gradient-accent flex items-center justify-center">
-            <Compass className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-bold">
-            <span className="text-gradient">Cairo</span>
-            <span className="text-foreground"> Scout</span>
-          </span>
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="h-9 w-9 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
+              <Compass className="h-5 w-5 text-primary-foreground" />
+            </div>
+            {!isCollapsed && (
+              <span className="text-xl font-bold">
+                <span className="text-gradient">Cairo</span>
+                <span className="text-foreground"> Scout</span>
+              </span>
+            )}
+          </Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className={cn("h-8 w-8 text-muted-foreground hover:text-foreground", isCollapsed && "hidden")}
+          >
+            <PanelLeftClose className="h-4 w-4" />
+          </Button>
+        </div>
       </SidebarHeader>
 
       <SidebarContent className="px-2 py-4">
@@ -175,10 +193,21 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-border">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-          <span>{selectedChain} {selectedNetwork}</span>
-        </div>
+        {isCollapsed ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="h-8 w-8 text-muted-foreground hover:text-foreground mx-auto"
+          >
+            <PanelLeft className="h-4 w-4" />
+          </Button>
+        ) : (
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+            <span>{selectedChain} {selectedNetwork}</span>
+          </div>
+        )}
       </SidebarFooter>
     </Sidebar>
   );
