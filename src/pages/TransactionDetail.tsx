@@ -5,6 +5,7 @@ import { ArrowRightLeft, Clock, Hash, Box, Fuel, User, ArrowLeft, CheckCircle2, 
 import { generateTransactions, formatTimestamp, truncateHash } from '@/lib/mockData';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { CopyButton } from '@/components/CopyButton';
 
 const StatusBadge = ({ status }: { status: 'success' | 'failed' | 'pending' }) => {
   const config = {
@@ -72,20 +73,26 @@ const TransactionDetail = () => {
                   <detail.icon className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm text-muted-foreground">{detail.label}</span>
                 </div>
-                <div className="flex-1">
+                <div className="flex items-center gap-2 flex-1">
                   {detail.isStatus ? (
                     <StatusBadge status={detail.value as 'success' | 'failed' | 'pending'} />
                   ) : detail.link ? (
-                    <Link 
-                      to={detail.link} 
-                      className={`text-sm text-primary hover:underline ${detail.mono ? 'font-mono break-all' : ''}`}
-                    >
-                      {detail.mono ? truncateHash(detail.value, 16, 16) : detail.value}
-                    </Link>
+                    <>
+                      <Link 
+                        to={detail.link} 
+                        className={`text-sm text-primary hover:underline ${detail.mono ? 'font-mono break-all' : ''}`}
+                      >
+                        {detail.mono ? truncateHash(detail.value, 16, 16) : detail.value}
+                      </Link>
+                      {detail.mono && <CopyButton text={detail.value} />}
+                    </>
                   ) : (
-                    <span className={`text-sm text-foreground ${detail.mono ? 'font-mono break-all' : ''}`}>
-                      {detail.mono ? truncateHash(detail.value, 16, 16) : detail.value}
-                    </span>
+                    <>
+                      <span className={`text-sm text-foreground ${detail.mono ? 'font-mono break-all' : ''}`}>
+                        {detail.mono ? truncateHash(detail.value, 16, 16) : detail.value}
+                      </span>
+                      {detail.mono && <CopyButton text={detail.value} />}
+                    </>
                   )}
                 </div>
               </div>

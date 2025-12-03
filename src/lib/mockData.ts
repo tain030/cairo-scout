@@ -134,18 +134,26 @@ export const formatNumber = (num: number): string => {
   return num.toLocaleString();
 };
 
-// Detect search type
+// Detect search type - supports block height, block hash, tx hash, and address
 export const detectSearchType = (query: string): 'block' | 'transaction' | 'address' | 'unknown' => {
-  const trimmed = query.trim();
+  const trimmed = query.trim().toLowerCase();
   
   // Block height (number only)
   if (/^\d+$/.test(trimmed)) return 'block';
   
-  // Transaction hash (66 chars with 0x prefix)
-  if (/^0x[a-fA-F0-9]{64}$/.test(trimmed)) return 'transaction';
+  // Hash with 0x prefix and 64 hex chars - could be block hash or tx hash
+  // For simplicity, we'll treat 64-char hashes as transaction hashes
+  // Block hashes in Starknet are also 64 chars, so we'll add a helper
+  if (/^0x[a-f0-9]{64}$/.test(trimmed)) return 'transaction';
   
-  // Address (42 chars with 0x prefix)
-  if (/^0x[a-fA-F0-9]{40,64}$/.test(trimmed)) return 'address';
+  // Address (40-63 chars with 0x prefix) - Starknet addresses can vary
+  if (/^0x[a-f0-9]{40,63}$/.test(trimmed)) return 'address';
   
   return 'unknown';
+};
+
+// Additional helper to detect if a hash could be a block hash
+export const isValidHash = (query: string): boolean => {
+  const trimmed = query.trim().toLowerCase();
+  return /^0x[a-f0-9]{64}$/.test(trimmed);
 };
