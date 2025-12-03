@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { detectSearchType } from '@/lib/mockData';
 import { toast } from '@/hooks/use-toast';
 
@@ -52,33 +51,37 @@ export const SearchBar = ({ variant = 'compact', className = '' }: SearchBarProp
 
   const isHero = variant === 'hero';
 
-  return (
-    <form onSubmit={handleSearch} className={`relative ${className}`}>
-      <div className={`flex items-center gap-2 ${isHero ? 'flex-col sm:flex-row' : ''}`}>
-        <div className="relative flex-1 w-full">
-          <Search className={`absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground ${isHero ? 'h-5 w-5' : 'h-4 w-4'}`} />
+  if (isHero) {
+    return (
+      <form onSubmit={handleSearch} className={className}>
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input
             type="text"
-            placeholder="Search by Block / Tx Hash / Address"
+            placeholder="Search by address / txn hash / block / token..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className={`pl-12 font-mono ${
-              isHero 
-                ? 'h-14 text-base bg-secondary/50 border-border/50 focus:border-primary focus:ring-primary/20 rounded-xl' 
-                : 'h-10 text-sm bg-secondary border-border'
-            }`}
+            className="w-full h-14 pl-12 pr-16 text-base bg-card/90 backdrop-blur-sm border-0 rounded-xl font-mono placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-white/20"
           />
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-muted-foreground/50">
+            <kbd className="px-2 py-1 text-xs bg-muted/50 rounded border border-border/50">/</kbd>
+          </div>
         </div>
-        <Button 
-          type="submit" 
-          className={`${
-            isHero 
-              ? 'h-14 px-8 bg-gradient-accent hover:opacity-90 font-semibold w-full sm:w-auto rounded-xl' 
-              : 'h-10 px-4'
-          }`}
-        >
-          Search
-        </Button>
+      </form>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSearch} className={`relative ${className}`}>
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="text"
+          placeholder="Search..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="h-10 pl-10 pr-4 text-sm bg-secondary border-border font-mono"
+        />
       </div>
     </form>
   );
