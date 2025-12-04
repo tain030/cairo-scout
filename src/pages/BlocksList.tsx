@@ -5,9 +5,11 @@ import { Box, ArrowLeft } from 'lucide-react';
 import { generateBlocks } from '@/lib/mockData';
 import { Button } from '@/components/ui/button';
 import { BlocksTable } from '@/components/BlocksTable';
+import { useChain } from '@/contexts/ChainContext';
 
 const BlocksList = () => {
-  const blocks = useMemo(() => generateBlocks(20), []);
+  const { selectedChain, selectedNetwork } = useChain();
+  const blocks = useMemo(() => generateBlocks(20, selectedChain, selectedNetwork), [selectedChain, selectedNetwork]);
 
   return (
     <Layout>
@@ -24,7 +26,7 @@ const BlocksList = () => {
               <Box className="h-6 w-6 text-primary" />
               <h1 className="text-2xl font-bold text-foreground">Blocks</h1>
             </div>
-            <p className="text-muted-foreground text-sm">Latest blocks on the network</p>
+            <p className="text-muted-foreground text-sm">Latest blocks on {selectedChain} {selectedNetwork}</p>
           </div>
         </div>
 

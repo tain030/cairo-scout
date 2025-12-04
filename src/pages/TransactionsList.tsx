@@ -5,9 +5,11 @@ import { ArrowRightLeft, ArrowLeft } from 'lucide-react';
 import { generateTransactions } from '@/lib/mockData';
 import { Button } from '@/components/ui/button';
 import { TransactionsTable } from '@/components/TransactionsTable';
+import { useChain } from '@/contexts/ChainContext';
 
 const TransactionsList = () => {
-  const transactions = useMemo(() => generateTransactions(20), []);
+  const { selectedChain, selectedNetwork } = useChain();
+  const transactions = useMemo(() => generateTransactions(20, selectedChain, selectedNetwork), [selectedChain, selectedNetwork]);
 
   return (
     <Layout>
@@ -24,7 +26,7 @@ const TransactionsList = () => {
               <ArrowRightLeft className="h-6 w-6 text-starknet-purple" />
               <h1 className="text-2xl font-bold text-foreground">Transactions</h1>
             </div>
-            <p className="text-muted-foreground text-sm">Latest transactions on the network</p>
+            <p className="text-muted-foreground text-sm">Latest transactions on {selectedChain} {selectedNetwork}</p>
           </div>
         </div>
 

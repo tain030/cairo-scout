@@ -1,5 +1,7 @@
 // Mock data for Cairo Scout blockchain explorer
 
+import type { ChainType, NetworkType } from '@/contexts/ChainContext';
+
 export interface Block {
   height: number;
   hash: string;
@@ -39,6 +41,22 @@ export interface ChainStats {
   totalContracts: number;
 }
 
+// Chain-specific base values
+const chainBaseStats: Record<ChainType, Record<NetworkType, { blockOffset: number; tpsMultiplier: number; prefix: string }>> = {
+  Starknet: {
+    Mainnet: { blockOffset: 847523, tpsMultiplier: 1, prefix: '0x' },
+    Testnet: { blockOffset: 234567, tpsMultiplier: 0.3, prefix: '0x' },
+  },
+  Kakarot: {
+    Mainnet: { blockOffset: 123456, tpsMultiplier: 0.8, prefix: '0x' },
+    Testnet: { blockOffset: 45678, tpsMultiplier: 0.2, prefix: '0x' },
+  },
+  Madara: {
+    Mainnet: { blockOffset: 567890, tpsMultiplier: 0.6, prefix: '0x' },
+    Testnet: { blockOffset: 12345, tpsMultiplier: 0.15, prefix: '0x' },
+  },
+};
+
 // Generate random hex string
 const randomHex = (length: number): string => {
   const chars = '0123456789abcdef';
@@ -49,16 +67,17 @@ const randomHex = (length: number): string => {
   return result;
 };
 
-// Generate mock blocks
-export const generateBlocks = (count: number, startHeight: number = 847523): Block[] => {
+// Generate mock blocks based on chain and network
+export const generateBlocks = (count: number, chain: ChainType = 'Starknet', network: NetworkType = 'Mainnet'): Block[] => {
   const blocks: Block[] = [];
   const now = Date.now();
+  const { blockOffset } = chainBaseStats[chain][network];
   
   for (let i = 0; i < count; i++) {
     blocks.push({
-      height: startHeight - i,
+      height: blockOffset - i,
       hash: randomHex(64),
-      timestamp: now - i * 12000, // ~12 seconds per block
+      timestamp: now - i * 12000,
       txCount: Math.floor(Math.random() * 150) + 10,
       gasUsed: (Math.floor(Math.random() * 15000000) + 5000000).toLocaleString(),
       gasLimit: '30000000',
@@ -69,17 +88,18 @@ export const generateBlocks = (count: number, startHeight: number = 847523): Blo
   return blocks;
 };
 
-// Generate mock transactions
-export const generateTransactions = (count: number): Transaction[] => {
+// Generate mock transactions based on chain and network
+export const generateTransactions = (count: number, chain: ChainType = 'Starknet', network: NetworkType = 'Mainnet'): Transaction[] => {
   const transactions: Transaction[] = [];
   const now = Date.now();
+  const { blockOffset } = chainBaseStats[chain][network];
   const types = ['INVOKE', 'DEPLOY', 'DECLARE', 'L1_HANDLER'];
   const statuses: ('success' | 'failed' | 'pending')[] = ['success', 'success', 'success', 'success', 'failed', 'pending'];
   
   for (let i = 0; i < count; i++) {
     transactions.push({
       hash: randomHex(64),
-      blockNumber: 847523 - Math.floor(i / 5),
+      blockNumber: blockOffset - Math.floor(i / 5),
       from: randomHex(40),
       to: randomHex(40),
       value: (Math.random() * 100).toFixed(4) + ' ETH',
@@ -102,15 +122,22 @@ export const generateAccount = (address: string): Account => ({
   contractType: Math.random() > 0.5 ? 'Account' : undefined,
 });
 
-// Chain stats
-export const chainStats: ChainStats = {
-  latestBlock: 847523,
-  tps: 14.7,
-  txLast24h: 1247893,
-  gasPrice: '23.5 gwei',
-  totalAccounts: 2847523,
-  totalContracts: 156789,
+// Chain stats based on chain and network
+export const getChainStats = (chain: ChainType = 'Starknet', network: NetworkType = 'Mainnet'): ChainStats => {
+  const { blockOffset, tpsMultiplier } = chainBaseStats[chain][network];
+  
+  return {
+    latestBlock: blockOffset,
+    tps: parseFloat((14.7 * tpsMultiplier).toFixed(1)),
+    txLast24h: Math.floor(1247893 * tpsMultiplier),
+    gasPrice: (23.5 * tpsMultiplier).toFixed(1) + ' gwei',
+    totalAccounts: Math.floor(2847523 * tpsMultiplier),
+    totalContracts: Math.floor(156789 * tpsMultiplier),
+  };
 };
+
+// Legacy export for backwards compatibility
+export const chainStats: ChainStats = getChainStats('Starknet', 'Mainnet');
 
 // Format helpers
 export const truncateHash = (hash: string, start: number = 6, end: number = 4): string => {
@@ -134,25 +161,17 @@ export const formatNumber = (num: number): string => {
   return num.toLocaleString();
 };
 
-// Detect search type - supports block height, block hash, tx hash, and address
+// Detect search type
 export const detectSearchType = (query: string): 'block' | 'transaction' | 'address' | 'unknown' => {
   const trimmed = query.trim().toLowerCase();
   
-  // Block height (number only)
   if (/^\d+$/.test(trimmed)) return 'block';
-  
-  // Hash with 0x prefix and 64 hex chars - could be block hash or tx hash
-  // For simplicity, we'll treat 64-char hashes as transaction hashes
-  // Block hashes in Starknet are also 64 chars, so we'll add a helper
   if (/^0x[a-f0-9]{64}$/.test(trimmed)) return 'transaction';
-  
-  // Address (40-63 chars with 0x prefix) - Starknet addresses can vary
   if (/^0x[a-f0-9]{40,63}$/.test(trimmed)) return 'address';
   
   return 'unknown';
 };
 
-// Additional helper to detect if a hash could be a block hash
 export const isValidHash = (query: string): boolean => {
   const trimmed = query.trim().toLowerCase();
   return /^0x[a-f0-9]{64}$/.test(trimmed);

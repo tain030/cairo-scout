@@ -9,8 +9,6 @@ import {
   ChevronDown,
   Globe,
   TestTube,
-  PanelLeftClose,
-  PanelLeft
 } from 'lucide-react';
 import {
   Sidebar,
@@ -31,24 +29,23 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { useChain, ChainType, NetworkType } from '@/contexts/ChainContext';
 
-const chains = [
+const chains: { name: ChainType; icon: string }[] = [
   { name: 'Starknet', icon: '⚡' },
   { name: 'Kakarot', icon: '🐸' },
   { name: 'Madara', icon: '🔴' },
 ];
 
-const networks = [
+const networks: { name: NetworkType; icon: typeof Globe }[] = [
   { name: 'Mainnet', icon: Globe },
-  { name: 'Testnet (Sepolia)', icon: TestTube },
+  { name: 'Testnet', icon: TestTube },
 ];
 
 export function AppSidebar() {
   const location = useLocation();
-  const { state, toggleSidebar } = useSidebar();
-  const [selectedChain, setSelectedChain] = useState('Starknet');
-  const [selectedNetwork, setSelectedNetwork] = useState('Mainnet');
+  const { state } = useSidebar();
+  const { selectedChain, selectedNetwork, setSelectedChain, setSelectedNetwork } = useChain();
   const [chainsOpen, setChainsOpen] = useState(false);
   const [networkOpen, setNetworkOpen] = useState(false);
 
@@ -64,43 +61,17 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
       <SidebarHeader className={cn("border-b border-border", isCollapsed ? "p-2" : "p-3")}>
-        {isCollapsed ? (
-          <div className="flex flex-col items-center gap-2">
-            <Link to="/" className="flex items-center justify-center">
-              <div className="h-8 w-8 rounded-lg bg-gradient-accent flex items-center justify-center">
-                <Compass className="h-4 w-4 text-primary-foreground" />
-              </div>
-            </Link>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleSidebar}
-              className="h-8 w-8 text-muted-foreground hover:text-foreground"
-            >
-              <PanelLeft className="h-4 w-4" />
-            </Button>
+        <Link to="/" className={cn("flex items-center gap-2 group", isCollapsed && "justify-center")}>
+          <div className="h-8 w-8 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
+            <Compass className="h-4 w-4 text-primary-foreground" />
           </div>
-        ) : (
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="h-8 w-8 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
-                <Compass className="h-4 w-4 text-primary-foreground" />
-              </div>
-              <span className="text-lg font-bold">
-                <span className="text-gradient">Cairo</span>
-                <span className="text-foreground"> Scout</span>
-              </span>
-            </Link>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleSidebar}
-              className="h-8 w-8 text-muted-foreground hover:text-foreground"
-            >
-              <PanelLeftClose className="h-4 w-4" />
-            </Button>
-          </div>
-        )}
+          {!isCollapsed && (
+            <span className="text-lg font-bold">
+              <span className="text-gradient">Cairo</span>
+              <span className="text-foreground"> Scout</span>
+            </span>
+          )}
+        </Link>
       </SidebarHeader>
 
       <SidebarContent className="px-2 py-4">
@@ -199,11 +170,12 @@ export function AppSidebar() {
                     <Link
                       to={item.url}
                       className={cn(
-                        "flex items-center gap-2 w-full",
+                        "flex items-center gap-2",
+                        isCollapsed && "justify-center",
                         isActive(item.url) && "bg-primary/10 text-primary font-medium"
                       )}
                     >
-                      <item.icon className="h-4 w-4" />
+                      <item.icon className="h-4 w-4 flex-shrink-0" />
                       {!isCollapsed && <span>{item.title}</span>}
                     </Link>
                   </SidebarMenuButton>
@@ -215,10 +187,14 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-3 border-t border-border">
-        {!isCollapsed && (
+        {!isCollapsed ? (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
             <span>{selectedChain} {selectedNetwork}</span>
+          </div>
+        ) : (
+          <div className="flex justify-center">
+            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
           </div>
         )}
       </SidebarFooter>
