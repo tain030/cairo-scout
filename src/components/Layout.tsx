@@ -13,13 +13,9 @@ export const Layout = ({ children }: LayoutProps) => {
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <div className="flex-1 flex flex-col">
-          {/* Mobile header with sidebar trigger */}
-          <header className="md:hidden sticky top-0 z-40 flex items-center h-14 px-4 border-b border-border bg-background/80 backdrop-blur-xl">
-            <SidebarTrigger />
-            <span className="ml-3 text-lg font-bold">
-              <span className="text-gradient">Cairo</span>
-              <span className="text-foreground"> Scout</span>
-            </span>
+          {/* Header with sidebar trigger - always visible */}
+          <header className="sticky top-0 z-40 flex items-center h-12 px-4 border-b border-border bg-background/80 backdrop-blur-xl">
+            <SidebarTrigger className="h-8 w-8" />
           </header>
           <main className="flex-1">
             {children}

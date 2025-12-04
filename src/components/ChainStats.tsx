@@ -1,46 +1,50 @@
 import { Box, Activity, Fuel, Users, FileCode, TrendingUp } from 'lucide-react';
-import { chainStats, formatNumber } from '@/lib/mockData';
-
-const stats = [
-  {
-    label: 'Latest Block',
-    value: formatNumber(chainStats.latestBlock),
-    icon: Box,
-    color: 'text-primary',
-  },
-  {
-    label: 'TPS',
-    value: chainStats.tps.toFixed(1),
-    icon: Activity,
-    color: 'text-starknet-cyan',
-  },
-  {
-    label: 'Txns (24h)',
-    value: formatNumber(chainStats.txLast24h),
-    icon: TrendingUp,
-    color: 'text-starknet-purple',
-  },
-  {
-    label: 'Gas Price',
-    value: chainStats.gasPrice,
-    icon: Fuel,
-    color: 'text-warning',
-  },
-  {
-    label: 'Total Accounts',
-    value: formatNumber(chainStats.totalAccounts),
-    icon: Users,
-    color: 'text-success',
-  },
-  {
-    label: 'Contracts',
-    value: formatNumber(chainStats.totalContracts),
-    icon: FileCode,
-    color: 'text-starknet-blue',
-  },
-];
+import { getChainStats, formatNumber } from '@/lib/mockData';
+import { useChain } from '@/contexts/ChainContext';
 
 export const ChainStats = () => {
+  const { selectedChain, selectedNetwork } = useChain();
+  const chainStats = getChainStats(selectedChain, selectedNetwork);
+
+  const stats = [
+    {
+      label: 'Latest Block',
+      value: formatNumber(chainStats.latestBlock),
+      icon: Box,
+      color: 'text-primary',
+    },
+    {
+      label: 'TPS',
+      value: chainStats.tps.toFixed(1),
+      icon: Activity,
+      color: 'text-starknet-cyan',
+    },
+    {
+      label: 'Txns (24h)',
+      value: formatNumber(chainStats.txLast24h),
+      icon: TrendingUp,
+      color: 'text-starknet-purple',
+    },
+    {
+      label: 'Gas Price',
+      value: chainStats.gasPrice,
+      icon: Fuel,
+      color: 'text-warning',
+    },
+    {
+      label: 'Total Accounts',
+      value: formatNumber(chainStats.totalAccounts),
+      icon: Users,
+      color: 'text-success',
+    },
+    {
+      label: 'Contracts',
+      value: formatNumber(chainStats.totalContracts),
+      icon: FileCode,
+      color: 'text-starknet-blue',
+    },
+  ];
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
       {stats.map((stat) => (

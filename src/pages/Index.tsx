@@ -5,10 +5,13 @@ import { ChainStats } from '@/components/ChainStats';
 import { BlocksTable } from '@/components/BlocksTable';
 import { TransactionsTable } from '@/components/TransactionsTable';
 import { generateBlocks, generateTransactions } from '@/lib/mockData';
+import { useChain } from '@/contexts/ChainContext';
 
 const Index = () => {
-  const blocks = useMemo(() => generateBlocks(10), []);
-  const transactions = useMemo(() => generateTransactions(10), []);
+  const { selectedChain, selectedNetwork } = useChain();
+  
+  const blocks = useMemo(() => generateBlocks(10, selectedChain, selectedNetwork), [selectedChain, selectedNetwork]);
+  const transactions = useMemo(() => generateTransactions(10, selectedChain, selectedNetwork), [selectedChain, selectedNetwork]);
 
   return (
     <Layout>
@@ -23,8 +26,11 @@ const Index = () => {
         <div className="container mx-auto px-4 relative">
           <div className="max-w-4xl">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-white">
-              Starknet explorer
+              {selectedChain} explorer
             </h1>
+            <p className="text-white/70 mb-4 text-sm">
+              {selectedNetwork} Network
+            </p>
             
             <div className="max-w-3xl">
               <SearchBar variant="hero" />

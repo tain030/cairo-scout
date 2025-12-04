@@ -6,13 +6,19 @@ import { generateBlocks, generateTransactions, formatTimestamp, truncateHash } f
 import { Button } from '@/components/ui/button';
 import { TransactionsTable } from '@/components/TransactionsTable';
 import { CopyButton } from '@/components/CopyButton';
+import { useChain } from '@/contexts/ChainContext';
 
 const BlockDetail = () => {
   const { blockId } = useParams();
+  const { selectedChain, selectedNetwork } = useChain();
   const blockHeight = parseInt(blockId || '847523');
   
-  const block = useMemo(() => generateBlocks(1, blockHeight)[0], [blockHeight]);
-  const transactions = useMemo(() => generateTransactions(block.txCount).slice(0, 10), [block.txCount]);
+  const block = useMemo(() => {
+    const blocks = generateBlocks(1, selectedChain, selectedNetwork);
+    return { ...blocks[0], height: blockHeight };
+  }, [blockHeight, selectedChain, selectedNetwork]);
+  
+  const transactions = useMemo(() => generateTransactions(block.txCount, selectedChain, selectedNetwork).slice(0, 10), [block.txCount, selectedChain, selectedNetwork]);
 
   const details = [
     { label: 'Block Height', value: `#${block.height.toLocaleString()}`, icon: Box },
