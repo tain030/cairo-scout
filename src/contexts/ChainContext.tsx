@@ -1,7 +1,13 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 export type ChainType = 'Starknet' | 'Kakarot' | 'Madara';
 export type NetworkType = 'Mainnet' | 'Testnet';
+
+const chainThemeMap: Record<ChainType, string> = {
+  Starknet: 'theme-starknet',
+  Kakarot: 'theme-kakarot',
+  Madara: 'theme-madara',
+};
 
 interface ChainContextType {
   selectedChain: ChainType;
@@ -15,6 +21,19 @@ const ChainContext = createContext<ChainContextType | undefined>(undefined);
 export const ChainProvider = ({ children }: { children: ReactNode }) => {
   const [selectedChain, setSelectedChain] = useState<ChainType>('Starknet');
   const [selectedNetwork, setSelectedNetwork] = useState<NetworkType>('Mainnet');
+
+  // Apply theme class to document root when chain changes
+  useEffect(() => {
+    const root = document.documentElement;
+    
+    // Remove all theme classes
+    Object.values(chainThemeMap).forEach(theme => {
+      root.classList.remove(theme);
+    });
+    
+    // Add current chain's theme class
+    root.classList.add(chainThemeMap[selectedChain]);
+  }, [selectedChain]);
 
   return (
     <ChainContext.Provider value={{ selectedChain, selectedNetwork, setSelectedChain, setSelectedNetwork }}>

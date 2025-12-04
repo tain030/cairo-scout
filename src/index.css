@@ -5,8 +5,9 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @layer base {
-  :root {
-    /* Starknet-inspired dark theme */
+  :root,
+  .theme-starknet {
+    /* Starknet-inspired dark theme - Cyan/Purple */
     --background: 235 45% 6%;
     --foreground: 210 40% 96%;
 
@@ -44,11 +45,9 @@
     --radius: 0.75rem;
 
     /* Custom colors */
-    --starknet-navy: 235 50% 12%;
-    --starknet-blue: 220 85% 55%;
-    --starknet-cyan: 180 70% 50%;
-    --starknet-purple: 270 60% 60%;
-    --starknet-glow: 180 70% 50%;
+    --chain-primary: 180 70% 50%;
+    --chain-secondary: 270 60% 60%;
+    --chain-glow: 180 70% 50%;
 
     /* Gradients */
     --gradient-hero: linear-gradient(135deg, hsl(235 50% 12%) 0%, hsl(250 45% 18%) 50%, hsl(235 50% 12%) 100%);
@@ -68,6 +67,110 @@
     --sidebar-accent-foreground: 210 40% 96%;
     --sidebar-border: 235 30% 20%;
     --sidebar-ring: 180 70% 50%;
+  }
+
+  /* Kakarot Theme - Orange/Red (Ethereum-inspired) */
+  .theme-kakarot {
+    --background: 20 40% 6%;
+    --foreground: 30 30% 96%;
+
+    --card: 20 35% 10%;
+    --card-foreground: 30 30% 96%;
+
+    --popover: 20 35% 10%;
+    --popover-foreground: 30 30% 96%;
+
+    --primary: 25 95% 55%;
+    --primary-foreground: 20 40% 6%;
+
+    --secondary: 20 30% 18%;
+    --secondary-foreground: 30 30% 96%;
+
+    --muted: 20 25% 15%;
+    --muted-foreground: 25 20% 55%;
+
+    --accent: 0 75% 60%;
+    --accent-foreground: 30 30% 98%;
+
+    --border: 20 25% 20%;
+    --input: 20 25% 20%;
+    --ring: 25 95% 55%;
+
+    /* Custom colors */
+    --chain-primary: 25 95% 55%;
+    --chain-secondary: 0 75% 60%;
+    --chain-glow: 25 95% 55%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(20 40% 8%) 0%, hsl(15 45% 14%) 50%, hsl(20 40% 8%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(20 35% 12%) 0%, hsl(20 35% 8%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 55%) 0%, hsl(0 75% 60%) 100%);
+    --gradient-text: linear-gradient(90deg, hsl(25 95% 55%) 0%, hsl(0 75% 60%) 100%);
+
+    /* Shadows */
+    --shadow-glow: 0 0 40px hsl(25 95% 55% / 0.15);
+    --shadow-card: 0 4px 24px hsl(20 40% 5% / 0.5);
+
+    --sidebar-background: 20 40% 6%;
+    --sidebar-foreground: 30 30% 96%;
+    --sidebar-primary: 25 95% 55%;
+    --sidebar-primary-foreground: 20 40% 6%;
+    --sidebar-accent: 20 30% 18%;
+    --sidebar-accent-foreground: 30 30% 96%;
+    --sidebar-border: 20 25% 20%;
+    --sidebar-ring: 25 95% 55%;
+  }
+
+  /* Madara Theme - Green/Teal (Custom chain) */
+  .theme-madara {
+    --background: 160 40% 5%;
+    --foreground: 150 30% 96%;
+
+    --card: 160 35% 9%;
+    --card-foreground: 150 30% 96%;
+
+    --popover: 160 35% 9%;
+    --popover-foreground: 150 30% 96%;
+
+    --primary: 160 70% 45%;
+    --primary-foreground: 160 40% 5%;
+
+    --secondary: 160 30% 16%;
+    --secondary-foreground: 150 30% 96%;
+
+    --muted: 160 25% 13%;
+    --muted-foreground: 155 20% 55%;
+
+    --accent: 185 65% 50%;
+    --accent-foreground: 150 30% 98%;
+
+    --border: 160 25% 18%;
+    --input: 160 25% 18%;
+    --ring: 160 70% 45%;
+
+    /* Custom colors */
+    --chain-primary: 160 70% 45%;
+    --chain-secondary: 185 65% 50%;
+    --chain-glow: 160 70% 45%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(160 40% 7%) 0%, hsl(170 45% 12%) 50%, hsl(160 40% 7%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(160 35% 11%) 0%, hsl(160 35% 7%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(160 70% 45%) 0%, hsl(185 65% 50%) 100%);
+    --gradient-text: linear-gradient(90deg, hsl(160 70% 45%) 0%, hsl(185 65% 50%) 100%);
+
+    /* Shadows */
+    --shadow-glow: 0 0 40px hsl(160 70% 45% / 0.15);
+    --shadow-card: 0 4px 24px hsl(160 40% 5% / 0.5);
+
+    --sidebar-background: 160 40% 5%;
+    --sidebar-foreground: 150 30% 96%;
+    --sidebar-primary: 160 70% 45%;
+    --sidebar-primary-foreground: 160 40% 5%;
+    --sidebar-accent: 160 30% 16%;
+    --sidebar-accent-foreground: 150 30% 96%;
+    --sidebar-border: 160 25% 18%;
+    --sidebar-ring: 160 70% 45%;
   }
 }
 
