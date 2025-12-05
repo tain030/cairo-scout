@@ -60,7 +60,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
-      <SidebarHeader className={cn("border-b border-border", isCollapsed ? "p-2" : "p-3")}>
+      <SidebarHeader className={cn("border-b border-border h-12 flex items-center", isCollapsed ? "px-2 justify-center" : "px-3")}>
         <Link to="/" className={cn("flex items-center gap-2 group", isCollapsed && "justify-center")}>
           <div className="h-8 w-8 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
             <Compass className="h-4 w-4 text-primary-foreground" />
@@ -186,7 +186,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-3 border-t border-border">
+      <SidebarFooter className="py-8 px-3 border-t border-border">
         {!isCollapsed ? (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
