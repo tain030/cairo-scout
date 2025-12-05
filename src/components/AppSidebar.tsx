@@ -60,7 +60,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
-      <SidebarHeader className={cn("h-12 flex items-center", isCollapsed ? "px-2 justify-center" : "px-3 justify-start")}>
+      <SidebarHeader className={cn("h-12 flex items-center", isCollapsed ? "px-2 justify-center" : "px-4 justify-start")}>
         <Link to="/" className={cn("flex items-center gap-2 group", isCollapsed && "justify-center")}>
           <div className="h-8 w-8 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
             <Compass className="h-4 w-4 text-primary-foreground" />
@@ -186,19 +186,17 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="px-3">
-        <div className="py-8">
-          {!isCollapsed ? (
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-              <span>{selectedChain} {selectedNetwork}</span>
-            </div>
-          ) : (
-            <div className="flex justify-center">
-              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-            </div>
-          )}
-        </div>
+      <SidebarFooter className="px-3 py-3">
+        {!isCollapsed ? (
+          <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+            <span>{selectedChain} {selectedNetwork}</span>
+          </div>
+        ) : (
+          <div className="flex justify-center">
+            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+          </div>
+        )}
       </SidebarFooter>
     </Sidebar>
   );
