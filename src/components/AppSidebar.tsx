@@ -186,17 +186,19 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="py-8 px-3 border-t border-border flex items-center">
-        {!isCollapsed ? (
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-            <span>{selectedChain} {selectedNetwork}</span>
-          </div>
-        ) : (
-          <div className="flex justify-center">
-            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-          </div>
-        )}
+      <SidebarFooter className="px-3 border-t border-border">
+        <div className="py-8">
+          {!isCollapsed ? (
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+              <span>{selectedChain} {selectedNetwork}</span>
+            </div>
+          ) : (
+            <div className="flex justify-center">
+              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+            </div>
+          )}
+        </div>
       </SidebarFooter>
     </Sidebar>
   );
