@@ -25,7 +25,7 @@ export const TransactionsTable = ({ transactions, showViewAll = true, compact = 
   const displayTxs = compact ? transactions.slice(0, 6) : transactions;
 
   return (
-    <div className="bg-card border border-border rounded-xl card-shadow animate-fade-in">
+    <div className="bg-card border border-border rounded-xl card-shadow animate-fade-in h-full flex flex-col">
       <div className="flex items-center justify-between p-4 border-b border-border">
         <div className="flex items-center gap-2">
           <ArrowRightLeft className="h-5 w-5 text-starknet-purple" />
@@ -40,11 +40,11 @@ export const TransactionsTable = ({ transactions, showViewAll = true, compact = 
         )}
       </div>
       
-      <div className="divide-y divide-border">
+      <div className="divide-y divide-border flex-1">
         {displayTxs.map((tx, index) => (
           <div
             key={tx.hash}
-            className="flex items-center justify-between p-4 hover:bg-secondary/50 transition-colors"
+            className="flex items-center justify-between p-4 hover:bg-secondary/50 transition-colors h-[72px]"
             style={{ animationDelay: `${index * 50}ms` }}
           >
             <div className="flex items-center gap-4">

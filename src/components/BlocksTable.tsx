@@ -13,7 +13,7 @@ export const BlocksTable = ({ blocks, showViewAll = true, compact = false }: Blo
   const displayBlocks = compact ? blocks.slice(0, 6) : blocks;
 
   return (
-    <div className="bg-card border border-border rounded-xl card-shadow animate-fade-in">
+    <div className="bg-card border border-border rounded-xl card-shadow animate-fade-in h-full flex flex-col">
       <div className="flex items-center justify-between p-4 border-b border-border">
         <div className="flex items-center gap-2">
           <Box className="h-5 w-5 text-primary" />
@@ -28,11 +28,11 @@ export const BlocksTable = ({ blocks, showViewAll = true, compact = false }: Blo
         )}
       </div>
       
-      <div className="divide-y divide-border">
+      <div className="divide-y divide-border flex-1">
         {displayBlocks.map((block, index) => (
           <div
             key={block.height}
-            className="flex items-center justify-between p-4 hover:bg-secondary/50 transition-colors"
+            className="flex items-center justify-between p-4 hover:bg-secondary/50 transition-colors h-[72px]"
             style={{ animationDelay: `${index * 50}ms` }}
           >
             <div className="flex items-center gap-4">
